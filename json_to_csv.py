@@ -4,7 +4,8 @@ import csv
 import json
 from collections import defaultdict
 
-value_types = [str, float, int]
+
+# value_types = [str, float, int]
 
 
 def read_file(file_to_read):
@@ -43,10 +44,11 @@ elif len(sys.argv) == 2:
 
     ''' Uncomment this if json data does not have json objects separated by comma .
         Or add your use case of missing commas for replace here'''
+        
     # if "}\n{" in str_data:
     #     str_data = str_data.replace("}\n{", "},\n{")
     # if "} {" in str_data:
-    #     str_data = str_data.replace("} {", "},\n{")
+	#     str_data = str_data.replace("} {", "},\n{")
 
     json_data = json.loads(str_data)
 
@@ -55,14 +57,15 @@ elif len(sys.argv) == 2:
     # currently only for one level down the top level eg: {"name": "john", "phone" :{"mobile": XXXX, "home": ZZZZ } }
     for item in json_data:
         if isinstance(item, dict):
-            per_object_dict = defaultdict(object)
+            per_object_dict = defaultdict(str)
             for key, value in item.items():
-                if any((isinstance(value, types) for types in value_types)) or value is None:
-                    per_object_dict[key] = value
+                # if any((isinstance(value, types) for types in value_types)) or value is None:
+                if not isinstance(value, dict):
+                    per_object_dict[key] = str(value)
                 elif isinstance(value, dict):
                     for inner_key, inner_value in value.items():
-                        if any((isinstance(inner_value, types) for types in value_types)) or value is None:
-                            per_object_dict[key + '_' + inner_key] = inner_value
+                        # if any((isinstance(inner_value, types) for types in value_types)) or value is None:
+                        per_object_dict[key] = str(inner_value)
 
             dict_objects_list.append(per_object_dict)
 
