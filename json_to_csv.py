@@ -11,7 +11,7 @@ from collections import defaultdict
 def read_file(file_to_read):
     data = []
     counter = 0
-    with open(file_to_read, encoding='UTF-16') as file:
+    with open(file_to_read, encoding='utf-16') as file:
         for line in file:
             if counter == 0 and not line.startswith("["):
                 line = "[" + line
@@ -26,58 +26,63 @@ def read_file(file_to_read):
 if len(sys.argv) == 1:
     sys.exit('\n \n No input file name given as parameter \n')
 
-elif len(sys.argv) > 2:
-    sys.exit('\n More parameters given than required \n')
+else:
+    files = []
 
-elif len(sys.argv) == 2:
-    input_file = sys.argv[1]
+    if len(sys.argv) == 2 and sys.argv[1] == "all":
+        contents = os.listdir(os.path.dirname(os.path.abspath(__file__)))
+        for item in contents:
+            if item.endswith(".json") or item.endswith(".txt"):
+                files.append(item)
 
-    if not os.path.isfile(input_file):
-        sys.exit('\n File does not exists \n')
+    elif len(sys.argv) >= 2:
+        files = [item for item in sys.argv[1:] if
+                 os.path.isfile(os.path.join(os.path.dirname(os.path.abspath(__file__)), item)) and (item.endswith('.json') or item.endswith(".txt"))]
 
-    data = read_file(input_file)
+    sys.exit('No file present') if len(files) == 0 else None
 
-    str_data = ""
-    for i in data:
-        if not i == "\n":
-            str_data += i
+    for input_file in files:
+        print("\n file : ", input_file)
+        data = read_file(input_file)
 
-    ''' Uncomment this if json data does not have json objects separated by comma .
-        Or add your use case of missing commas for replace here'''
-        
-    # if "}\n{" in str_data:
-    #     str_data = str_data.replace("}\n{", "},\n{")
-    # if "} {" in str_data:
-	#     str_data = str_data.replace("} {", "},\n{")
+        str_data = ""
+        for i in data:
+            if not i == "\n":
+                str_data += i
 
-    json_data = json.loads(str_data)
+       #if "}\n{" in str_data:
+       #    str_data = str_data.replace("}\n{", "},\n{")
+       #if "} {" in str_data:
+       #    str_data = str_data.replace("} {", "},\n{")
 
-    dict_objects_list = []
+        json_data = json.loads(str_data)
 
-    # currently only for one level down the top level eg: {"name": "john", "phone" :{"mobile": XXXX, "home": ZZZZ } }
-    for item in json_data:
-        if isinstance(item, dict):
-            per_object_dict = defaultdict(str)
-            for key, value in item.items():
-                # if any((isinstance(value, types) for types in value_types)) or value is None:
-                if not isinstance(value, dict):
-                    per_object_dict[key] = str(value)
-                elif isinstance(value, dict):
-                    for inner_key, inner_value in value.items():
-                        # if any((isinstance(inner_value, types) for types in value_types)) or value is None:
-                        per_object_dict[key] = str(inner_value)
+        dict_objects_list = []
 
-            dict_objects_list.append(per_object_dict)
+        # currently only for one level down the top level eg: {"name": "john", "phone" :{"mobile": XXXX, "home": ZZZZ } }
+        for item in json_data:
+            if isinstance(item, dict):
+                per_object_dict = defaultdict(str)
+                for key, value in item.items():
+                    # if any((isinstance(value, types) for types in value_types)) or value is None:
+                    if not isinstance(value, dict):
+                        per_object_dict[key] = str(value)
+                    elif isinstance(value, dict):
+                        for inner_key, inner_value in value.items():
+                            # if any((isinstance(inner_value, types) for types in value_types)) or value is None:
+                            per_object_dict[key] = str(inner_value)
 
-    keys = set(key for key in dict_objects_list[0].keys())
+                dict_objects_list.append(per_object_dict)
 
-    print('\n \n  keys : \n', sorted(keys))
+        keys = set(key for key in dict_objects_list[0].keys())
 
-    data = [[obj_dict[key] for key in sorted(keys)] for obj_dict in dict_objects_list]
+        # print('\n \n  keys : \n', sorted(keys))
 
-    with open('output.csv', 'w', encoding='utf-8', newline='') as output:
-        writer = csv.writer(output, delimiter=',')
-        header = [key for key in sorted(keys)]
-        writer.writerow(header)
-        for item in data:
-            writer.writerow(item)
+        data = [[obj_dict[key] for key in sorted(keys)] for obj_dict in dict_objects_list]
+
+        with open(input_file.split(".")[0] + '_output.csv', 'w', encoding='utf-8', newline='') as output:
+            writer = csv.writer(output, delimiter=',')
+            header = [key for key in sorted(keys)]
+            writer.writerow(header)
+            for item in data:
+                writer.writerow(item)
