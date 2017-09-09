@@ -12,7 +12,7 @@ Eg:
 {
 "name" : "John",
 
-"phone" : { "home": XXXXXX, "mobile": YYYYYY },
+"phone" : { "work": XXXXXX, "personal": YYYYYY },
 
 "email" : "foo@bar.com"
 
@@ -21,6 +21,6 @@ Eg:
 will be processed by the program where the output CSV is ( with keys as column names in ascending order ) :
 
 
-      email        name         phone_home          phone_mobile
+     email       name     phone_personal   phone_work
 --------------------------------------------------------------------
-1.  foo.bar@com    John          XXXXXX               YYYYYY 
+  foo.bar@com &nbsp;&nbsp;&nbsp;&nbsp;        John &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;       YYYYYY &nbsp;   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;              &nbsp;&nbsp; XXXXXX
