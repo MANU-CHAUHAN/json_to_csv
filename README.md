@@ -6,7 +6,7 @@ The scipt can take either 1 or more file names as command line arguments OR "all
 
 The current version just goes to jsut 2 levels down from the top level.. 
 
-Will make changes to any number of levels in next version.
+Will make changes to consider any number of levels within json objects in next version.
 
 Eg: 
 {
