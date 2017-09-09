@@ -23,4 +23,4 @@ will be processed by the program where the output CSV is ( with keys as column n
 
      email        name     phone_personal   phone_work
 --------------------------------------------------------------------
-  foo.bar@com &nbsp;&nbsp;&nbsp;&nbsp;        John &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;       YYYYYY &nbsp;   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;              &nbsp;&nbsp; XXXXXX
+  foo@bar.com &nbsp;&nbsp;&nbsp;&nbsp;        John &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;       YYYYYY &nbsp;   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;              &nbsp;&nbsp; XXXXXX
