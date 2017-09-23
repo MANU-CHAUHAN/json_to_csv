@@ -18,7 +18,7 @@ def read_file(file_to_read):
                 counter += 1
             data.append(line)
 
-    data.append("]") if data[-1] != ']' else None
+    data.append(']') if not data[-1].endswith(']') else None
 
     return data
 
