@@ -18,7 +18,7 @@ def read_file(file_to_read):
                 counter += 1
             data.append(line)
 
-    data.append(']') if not data[-1].endswith(']') else None
+    data.append("]") if not data[-1].endswith(']') else None
 
     return data
 
@@ -37,12 +37,13 @@ else:
 
     elif len(sys.argv) >= 2:
         files = [item for item in sys.argv[1:] if
-                 os.path.isfile(os.path.join(os.path.dirname(os.path.abspath(__file__)), item)) and (item.endswith('.json') or item.endswith(".txt"))]
+                 os.path.isfile(os.path.join(os.path.dirname(os.path.abspath(__file__)), item)) and (
+                 item.endswith('.json') or item.endswith(".txt"))]
 
     sys.exit('No file present') if len(files) == 0 else None
 
     for input_file in files:
-        print("\n file : ", input_file)
+        print("\n Processing file : ", input_file)
         data = read_file(input_file)
 
         str_data = ""
@@ -50,10 +51,10 @@ else:
             if not i == "\n":
                 str_data += i
 
-       #if "}\n{" in str_data:
-       #    str_data = str_data.replace("}\n{", "},\n{")
-       #if "} {" in str_data:
-       #    str_data = str_data.replace("} {", "},\n{")
+        if "}\n{" in str_data:
+            str_data = str_data.replace("}\n{", "},\n{")
+        if "} {" in str_data:
+            str_data = str_data.replace("} {", "},\n{")
 
         json_data = json.loads(str_data)
 
@@ -64,12 +65,10 @@ else:
             if isinstance(item, dict):
                 per_object_dict = defaultdict(str)
                 for key, value in item.items():
-                    # if any((isinstance(value, types) for types in value_types)) or value is None:
                     if not isinstance(value, dict):
                         per_object_dict[key] = str(value)
                     elif isinstance(value, dict):
                         for inner_key, inner_value in value.items():
-                            # if any((isinstance(inner_value, types) for types in value_types)) or value is None:
                             per_object_dict[key] = str(inner_value)
 
                 dict_objects_list.append(per_object_dict)
